@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <fstream>
 
 int gcd(int a, int b) {
 	if (b == 0) return a;
@@ -57,7 +57,9 @@ public:
 		this->denominator /= gcd(this->numerator, this->denominator);
 		return *this;
 	}
-
+	friend std::ostream& operator<<(std::ostream & os, const Rational& r) {
+		return os << r.numerator << "/" << r.denominator << std::endl;
+	}
 	~Rational() { }
 };
 double convert(const Rational& r) {
@@ -66,10 +68,11 @@ double convert(const Rational& r) {
 
 int main() {
 	Rational a(10, 20);
-	Rational b(1, 5);
-	Rational c;
-	c = a + b;
-
-	std::cout << convert(c);
+	Rational b(10, 20);
+	
+	Rational c = a + 10;
+	std::cout << c;
+	std::cout << a;
+	std::cout << b;
 	std::cin.get();
 }
