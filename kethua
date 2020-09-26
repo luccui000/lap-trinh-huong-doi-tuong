@@ -1,0 +1,80 @@
+#include <iostream> 
+#include <cassert> 
+using namespace std; 
+class Vehicle {    
+private:       
+	char *mfgName;			// ten nha san xuat
+	double dealerCost;		// gia dealer    
+public: 
+	Vehicle(char* mfg, double cost) {
+		mfgName = new char[strlen(mfg) + 1];            
+		assert(mfgName != 0);           
+		strcpy(mfgName, mfg);           
+		dealerCost = cost;
+	}
+	~Vehicle() {
+		delete[] mfgName;
+	}
+	virtual double retailPrice() {
+		return dealerCost * 1.25;
+	}
+	virtual void showVehicle() {
+		cout << "Manufacturer:   " << mfgName << endl << "Customer price: " << retailPrice() << endl;
+	}
+}; 
+class Car : public Vehicle {
+private:
+	char* m_ModelName;
+	bool isSunRoof;
+public:
+	Car(char* mfg, double cost)
+		: Vehicle(mfg, cost), m_ModelName(new char)
+	{ }
+	Car(char* mfg, double cost, char* modelName, bool check) 
+		: Vehicle(mfg, cost), m_ModelName(modelName), isSunRoof(check)
+	{ }
+	void showVehicle() {
+		Vehicle::showVehicle();
+		cout << "\nModel Name: " << m_ModelName << endl;
+		if (isSunRoof)
+			cout << "Co cua mai\n";
+		else
+			cout << "Khong co cua mai\n";
+	}
+	~Car() {
+		delete[] m_ModelName;
+	}
+};
+class Truck : public Vehicle {
+private:
+	double m_Capacity; 
+	bool isAuto;
+public:
+	Truck(char* mfg, double cost)
+		: Vehicle(mfg, cost)
+	{ }
+	Truck(char* mfg, double cost, double cap, bool check)
+		: Vehicle(mfg, cost), m_Capacity(cap), isAuto(check)
+	{ }
+	void showVehicle() {
+		Vehicle::showVehicle();
+		cout << "\nModel Name: " << m_Capacity << endl;
+		if (isAuto) 
+			cout << "Co bo truyen luc dong\n";
+		else 
+			cout << "Khong co bo truyen luc dong\n";
+	}
+	~Truck() { }
+};
+int main() {
+	Car   c1((char*)"Ford", 10000, (char*)"Mustang", false),
+		  c2((char*)"Chevy", 15000, (char*)"Camaro", true);
+	Truck t1((char*)"Ford", 12000, 1.5, true),
+		  t2((char*)"Dodge", 14000, 2.0, false);
+	cout << "Dealer inventory:" << endl;
+	c1.showVehicle();
+	c2.showVehicle();
+	t1.showVehicle();
+	t2.showVehicle();
+	cin.get();
+}
