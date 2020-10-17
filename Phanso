@@ -1,0 +1,242 @@
+#include <iostream>
+#include  <fstream>
+
+int ucln(int a, int b) {
+	if (a == 0) return b;
+	return ucln(b % a, a);
+}
+
+class Phanso {
+private:
+	int tuso, mauso;
+public:
+	Phanso() { }
+	Phanso(int t, int m = 1) : tuso(t), mauso(m) { }
+	Phanso operator+(const Phanso& v) {
+		Phanso ps;
+		ps.tuso = this->tuso * v.mauso + v.tuso * this->mauso;
+		ps.mauso = this->mauso * v.mauso;
+		return ps;
+	}
+	Phanso operator-(const Phanso& v) {
+		Phanso ps;
+		ps.tuso = this->tuso * v.mauso - v.tuso * this->mauso;
+		ps.mauso = this->mauso * v.mauso;
+		return ps;
+	}
+	Phanso operator*(const Phanso& v) {
+		Phanso ps;
+		ps.tuso = this->tuso * v.tuso;
+		ps.mauso = this->mauso * v.mauso;
+		return ps;
+	}
+	Phanso operator/(const Phanso& v) {
+		Phanso ps;
+		ps.tuso = this->tuso * v.mauso;
+		ps.mauso = this->mauso * v.tuso;
+		return ps;
+	}
+	friend Phanso operator+(const Phanso& ps1, const Phanso& ps2) {
+		Phanso ps;
+		ps.tuso = ps1.tuso * ps2.mauso + ps2.tuso * ps1.mauso;
+		ps.mauso = ps1.mauso * ps2.mauso;
+		return ps;
+	}
+	friend Phanso operator-(const Phanso& ps1, const Phanso& ps2) {
+		Phanso ps;
+		ps.tuso = ps1.tuso * ps2.mauso - ps2.tuso * ps1.mauso;
+		ps.mauso = ps1.mauso * ps2.mauso;
+		return ps;
+	}
+	friend Phanso operator*(const Phanso& ps1, const Phanso& ps2) {
+		Phanso ps;
+		ps.tuso = ps1.tuso * ps2.tuso;
+		ps.mauso = ps1.mauso * ps2.mauso;
+		return ps;
+	}
+	friend Phanso operator/(const Phanso& ps1, const Phanso& ps2) {
+		Phanso ps;
+		ps.tuso = ps1.tuso * ps2.mauso;
+		ps.mauso = ps1.mauso * ps2.tuso;
+		return ps;
+	}
+	friend Phanso operator+(const Phanso& ps1, int num) {
+		Phanso ps;
+		ps.tuso = ps1.tuso + num * ps1.mauso;
+		ps.mauso = ps1.mauso;
+		return ps;
+	}
+	friend Phanso operator-(const Phanso& ps1, int num) {
+		Phanso ps;
+		ps.tuso = ps1.tuso - num * ps1.mauso;
+		ps.mauso = ps1.mauso;
+		return ps;
+	}
+	friend Phanso operator*(const Phanso& ps1, int num) {
+		Phanso ps;
+		ps.tuso = ps1.tuso * num;
+		ps.mauso = ps1.mauso;
+		return ps;
+	}
+	friend Phanso operator/(const Phanso& ps1, int num) {
+		Phanso ps;
+		ps.tuso = ps1.tuso;
+		ps.mauso = ps1.mauso * num;
+		return ps;
+	}
+	friend Phanso operator+(int num, const Phanso& ps1) {
+		Phanso ps;
+		ps.tuso = num * ps1.tuso + ps1.tuso;
+		ps.mauso = ps1.mauso;
+		return ps;
+	}
+	friend Phanso operator-(int num, const Phanso& ps1) {
+		Phanso ps;
+		ps.tuso = num * ps1.tuso - ps1.tuso;
+		ps.mauso = ps1.mauso;
+		return ps;
+	}
+	friend Phanso operator*(int num, const Phanso& ps1) {
+		Phanso ps;
+		ps.tuso = num * ps1.tuso;
+		ps.mauso = ps1.mauso;
+		return ps;
+	}
+	friend Phanso operator/(int num, const Phanso& ps1) {
+		Phanso ps;
+		ps.tuso = num * ps1.mauso;
+		ps.mauso = ps1.tuso;
+		return ps;
+	}
+	void operator+=(const Phanso& ps1) {
+		this->tuso = this->tuso * ps1.mauso + ps1.tuso * this->mauso;
+		this->mauso = this->mauso * ps1.mauso;
+	}
+	void operator-=(const Phanso& ps1) {
+		this->tuso = this->tuso * ps1.mauso - ps1.tuso * this->mauso;
+		this->mauso = this->mauso * ps1.mauso;
+	}
+	void operator*=(const Phanso& ps1) {
+		this->tuso = this->tuso * ps1.tuso;
+		this->mauso = this->mauso * ps1.mauso;
+	}
+	void operator/=(const Phanso& ps1) {
+		this->tuso = this->tuso * ps1.mauso;
+		this->mauso = this->mauso * ps1.tuso;
+	}
+	void operator+=(int num) {
+		this->tuso = this->tuso + num * this->mauso;
+	}
+	void operator-=(int num) {
+		this->tuso = this->tuso - num * this->mauso;
+	}
+	void operator*=(int num) {
+		this->tuso = this->tuso * num;
+	}
+	void operator/=(int num) {
+		this->mauso = this->mauso * num;
+	}
+	bool operator>(const Phanso& ps) {
+		double d1 = this->tuso * 1.0 / this->mauso;
+		double d2 = ps.tuso * 1.0 / ps.mauso;
+		return (d1 > d2 ? true : false);
+	}
+	bool operator>=(const Phanso& ps) {
+		double d1 = this->tuso * 1.0 / this->mauso;
+		double d2 = ps.tuso * 1.0 / ps.mauso;
+		return (d1 > d2 || d1 == d2 ? true : false);
+	}
+	bool operator<(const Phanso& ps) {
+		double d1 = this->tuso * 1.0 / this->mauso;
+		double d2 = ps.tuso * 1.0 / ps.mauso;
+		return (d1 < d2 ? true : false);
+	}
+	bool operator<=(const Phanso& ps) {
+		double d1 = this->tuso * 1.0 / this->mauso;
+		double d2 = ps.tuso * 1.0 / ps.mauso;
+		return (d1 < d2 || d1 == d2 ? true : false);
+	}
+	bool operator!=(const Phanso& ps) {
+		double d1 = this->tuso * 1.0 / this->mauso;
+		double d2 = ps.tuso * 1.0 / ps.mauso;
+		return (d1 != d2 ? true : false);
+	}
+	bool operator==(const Phanso& ps) {
+		double d1 = this->tuso * 1.0 / this->mauso;
+		double d2 = ps.tuso * 1.0 / ps.mauso;
+		return (d1 == d2 ? true : false);
+	}
+	bool operator>(int num) {
+		double d1 = this->tuso * 1.0 / this->mauso;
+		return (d1 > num ? true : false);
+	}
+	bool operator>=(int num) {
+		double d1 = this->tuso * 1.0 / this->mauso;
+		return (d1 > num || d1 == num ? true : false);
+	}
+	bool operator<(int num) {
+		double d1 = this->tuso * 1.0 / this->mauso;
+		return (d1 < num ? true : false);
+	}
+	bool operator<=(int num) {
+		double d1 = this->tuso * 1.0 / this->mauso;
+		return (d1 < num || d1 == num ? true : false);
+	}
+	bool operator>(double num) {
+		double d1 = this->tuso * 1.0 / this->mauso;
+		return (d1 > num ? true : false);
+	}
+	bool operator>=(double num) {
+		double d1 = this->tuso * 1.0 / this->mauso;
+		return (d1 > num || d1 == num ? true : false);
+	}
+	bool operator<(double num) {
+		double d1 = this->tuso * 1.0 / this->mauso;
+		return (d1 > num ? true : false);
+	}
+	bool operator<=(double num) {
+		double d1 = this->tuso * 1.0 / this->mauso;
+		return (d1 > num || d1 == num ? true : false);
+	}
+	void operator++() {
+		this->tuso = this->tuso + this->mauso;
+	}
+	void operator++(int) {
+		this->tuso = this->tuso + this->mauso;
+	}
+	void operator--() {
+		this->tuso = this->tuso - this->mauso;
+	}
+	void operator--(int) {
+		this->tuso = this->tuso - this->mauso;
+	}
+	operator float() {
+		return (float)this->tuso / this->mauso;
+	}
+	operator int() {
+		return this->tuso / this->mauso;
+	}
+	operator double() {
+		return (double)this->tuso / this->mauso;
+	}
+	friend std::istream& operator>>(std::istream& in, Phanso& ps) {
+		std::cout << "Nhap Tu: ";
+		in >> ps.tuso;
+		std::cout << "Nhap Mau: ";
+		in >> ps.mauso;
+		return in;
+	}
+	friend std::ostream& operator<<(std::ostream& os, const Phanso& ps) {
+		return os << ps.tuso << "/" << ps.mauso;
+	}
+	friend void rutgon(Phanso& ps) {
+		int uc = ucln(ps.tuso, ps.mauso);
+		ps.tuso /= uc;
+		ps.mauso /= uc;
+	}
+};
+
+int main() {
+	
+	std::cin.get();
+}
